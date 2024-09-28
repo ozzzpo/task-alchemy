@@ -15,7 +15,7 @@ export const projects: Project[] = [
         description:
           'Создание дизайна главного экрана с функционалом добавления задач и просмотра статистики.',
         startDate: '2024-09-01',
-        endDate: '2024-09-15',
+        endDate: '2024-09-30',
         priority: 'high',
         completed: true,
       },
@@ -24,7 +24,7 @@ export const projects: Project[] = [
         title: 'Интеграция с календарём',
         description:
           'Добавление возможности синхронизации с календарями Google и Outlook.',
-        startDate: '2024-09-01',
+        startDate: '2024-08-12',
         endDate: '2024-09-15',
         priority: 'medium',
         completed: true,
@@ -36,6 +36,36 @@ export const projects: Project[] = [
           'Проверка корректной работы уведомлений для задач с дедлайнами.',
         startDate: '2024-09-01',
         endDate: '2024-09-15',
+        priority: 'low',
+        completed: false,
+      },
+      {
+        id: '7',
+        title: 'Тестирование абобы',
+        description:
+          'Проверка корректной работы уведомлений для задач с дедлайнами.',
+        startDate: '2024-09-01',
+        endDate: '2024-09-15',
+        priority: 'low',
+        completed: false,
+      },
+      {
+        id: '8',
+        title: 'Тестирование бебры',
+        description:
+          'Проверка корректной работы уведомлений для задач с дедлайнами.',
+        startDate: '2024-07-15',
+        endDate: '2024-09-15',
+        priority: 'low',
+        completed: false,
+      },
+      {
+        id: '9',
+        title: 'Тестирование функционала уведомлений',
+        description:
+          'Проверка корректной работы уведомлений для задач с дедлайнами.',
+        startDate: '2024-10-01',
+        endDate: '2024-10-15',
         priority: 'low',
         completed: false,
       },
@@ -61,7 +91,7 @@ export const projects: Project[] = [
       {
         id: '2',
         title: 'Очередь задач',
-        taskIds: [],
+        taskIds: ['7', '8', '9'],
       },
       {
         id: '3',
