@@ -8,9 +8,7 @@ export function RootLayout({
   return (
     <div className="flex ">
       {sidebarElement}
-      <div>
-        <Outlet />
-      </div>
+      <Outlet />
     </div>
   );
 }
