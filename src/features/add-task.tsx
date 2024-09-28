@@ -1,4 +1,3 @@
-import { useKanbanStore } from '@/entities/Kanban/kanban.store';
 import { Button } from '@/shared/ui/button';
 import {
   Dialog,
@@ -9,21 +8,28 @@ import {
 } from '@/shared/ui/dialog';
 import { Input } from '@/shared/ui/input';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-
+import { SubmitHandler, useForm } from 'react-hook-form';
+type FormData = {
+  content: string;
+};
 export function AddTask() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<FormData>();
   const [isOpen, setIsOpen] = useState(false);
-  const { addTask } = useKanbanStore();
-  const onSubmit = (data) => {
-    addTask(
-      {
-        ...data,
-        id: String(Math.random()),
-        completed: false,
-      },
-      'column-1'
-    );
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    // addTask(
+    //   {
+    //     ...data,
+    //     title: data.content,
+    //     description: '',
+    //     startDate: '',
+    //     endDate: '',
+    //     priority: 'low',
+    //     id: String(Math.random()),
+    //     completed: false,
+    //     project: null,
+    //   },
+    //   'column-1'
+    // );
     setIsOpen(false);
   };
   return (

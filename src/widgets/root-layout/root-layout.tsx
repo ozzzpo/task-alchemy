@@ -6,7 +6,7 @@ export function RootLayout({
   sidebarElement: React.ReactNode;
 }) {
   return (
-    <div className="flex ">
+    <div className="flex">
       {sidebarElement}
       <Outlet />
     </div>

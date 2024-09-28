@@ -7,7 +7,7 @@ import { ToggleTheme } from '@/features/toggle-theme';
 export function Sidebar() {
   const { logout } = useUserStore();
   return (
-    <aside className="h-screen shadow-xl min-w-fit group overflow-hidden px-2 py-4">
+    <aside className="h-screen bg-white shadow-xl min-w-fit group overflow-hidden px-2 py-4">
       <div className="flex flex-col h-full gap-3 w-12 group-hover:w-52 transition-all duration-500">
         <div className="flex items-center gap-2">
           <div className="w-fit">

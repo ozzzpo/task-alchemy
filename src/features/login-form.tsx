@@ -1,17 +1,21 @@
 import { useUserStore } from '@/entities/User/model/user.store';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
-import { useForm } from 'react-hook-form';
-
+import { SubmitHandler, useForm } from 'react-hook-form';
+type FormData = {
+  email: string;
+  password: string;
+};
 export function LoginForm({
   setAuthType,
 }: {
   setAuthType: React.Dispatch<React.SetStateAction<'login' | 'register'>>;
 }) {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<FormData>();
   const { login } = useUserStore();
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
+    login(data);
   };
   return (
     <form
