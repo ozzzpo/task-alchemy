@@ -1,7 +1,15 @@
+import { Draggable } from 'react-beautiful-dnd';
 import { Task } from '@/shared/types/task.type';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { PriorityTag } from '@/shared/ui/priority-tag';
-import { Draggable } from 'react-beautiful-dnd';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/shared/ui/sheet';
 
 export function DraggableTaskCard({
   task,
@@ -11,23 +19,40 @@ export function DraggableTaskCard({
   index: number;
 }) {
   return (
-    <Draggable draggableId={task?.id} index={index}>
-      {(provided) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          className={`flex gap-2 bg-white p-2 mb-2 rounded-md shadow-md ${
-            task.completed ? 'opacity-45 hover:opacity-100 transition' : ''
-          }`}
-        >
-          <Checkbox className="mt-1" checked={task.completed} />
-          <div>
-            <p>{task.title}</p>
-            <PriorityTag priority={task.priority} />
-          </div>
-        </div>
-      )}
-    </Draggable>
+    <Sheet>
+      <Draggable draggableId={task?.id} index={index}>
+        {(provided) => (
+          <SheetTrigger asChild>
+            <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              className={`flex gap-2 bg-white p-2 mb-2 rounded-md shadow-md cursor-pointer ${
+                task.completed ? 'opacity-45 hover:opacity-100 transition' : ''
+              }`}
+            >
+              <Checkbox
+                className="mt-1"
+                checked={task.completed}
+                onClick={(e) => e.stopPropagation()}
+              />
+              <div>
+                <p>{task.title}</p>
+                <PriorityTag priority={task.priority} />
+              </div>
+            </div>
+          </SheetTrigger>
+        )}
+      </Draggable>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Are you absolutely sure?</SheetTitle>
+          <SheetDescription>
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
+          </SheetDescription>
+        </SheetHeader>
+      </SheetContent>
+    </Sheet>
   );
 }
