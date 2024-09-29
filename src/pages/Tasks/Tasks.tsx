@@ -4,6 +4,7 @@ import { useTaskStore } from '@/entities/Task/model/task.store';
 import { useEffect } from 'react';
 import { DataTable } from '@/shared/ui/data-table';
 import { getColumns } from './tableColumns';
+import { TaskSheet } from '@/entities/Task/ui/task-sheet';
 
 export function Tasks() {
   const { setTitle } = useAppStore();
@@ -17,7 +18,7 @@ export function Tasks() {
   const columns = getColumns(projects);
   return (
     <div>
-      <DataTable columns={columns} data={tasks} />
+      <DataTable columns={columns} data={tasks} entitySheet={TaskSheet} />
     </div>
   );
 }

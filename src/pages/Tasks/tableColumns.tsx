@@ -10,12 +10,16 @@ export const getColumns = (projects: Project[]) => {
       header: 'Задача',
       cell: ({ row }) => {
         const title: string = row.getValue('title');
-        return <p className="font-medium">{title}</p>;
+        return <p className="font-semibold text-neutral-600">{title}</p>;
       },
     },
     {
       accessorKey: 'description',
       header: 'Описание',
+      cell: ({ row }) => {
+        const description: string = row.getValue('description');
+        return <p className="text-neutral-600">{description}</p>;
+      },
     },
 
     {
@@ -48,7 +52,7 @@ export const getColumns = (projects: Project[]) => {
       cell: ({ row }) => {
         const projectId: number = row.getValue('projectId');
         const project = projects.find((project) => project.id === projectId);
-        return <p className="text-neutral-600">{project?.title}</p>;
+        return <p className="text-neutral-600 font-medium">{project?.title}</p>;
       },
     },
     {

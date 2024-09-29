@@ -2,14 +2,8 @@ import { Draggable } from 'react-beautiful-dnd';
 import { Task } from '@/shared/types/task.type';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { PriorityTag } from '@/shared/ui/priority-tag';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/shared/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger } from '@/shared/ui/sheet';
+import { TaskSheet } from './task-sheet';
 
 export function DraggableTaskCard({
   task,
@@ -45,13 +39,7 @@ export function DraggableTaskCard({
         )}
       </Draggable>
       <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Are you absolutely sure?</SheetTitle>
-          <SheetDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </SheetDescription>
-        </SheetHeader>
+        <TaskSheet data={task} />
       </SheetContent>
     </Sheet>
   );

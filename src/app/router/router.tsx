@@ -7,7 +7,7 @@ import { Profile } from '@/pages/Profile';
 import { Tasks } from '@/pages/Tasks/Tasks';
 import { Projects } from '@/pages/Projects';
 import { Portfolio } from '@/pages/Portfolio';
-import { Employees } from '@/pages/Employees';
+import { Employees } from '@/pages/Employees/Employees';
 import { Settings } from '@/pages/Settings';
 import { WithTitle } from '@/widgets/with-title';
 import { Project } from '@/pages/Project';

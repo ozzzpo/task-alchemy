@@ -19,6 +19,13 @@ export const projects: Project[] = [
         priority: 'high',
         completed: true,
         projectId: 1,
+        assignees: [
+          {
+            id: 101,
+            name: 'Иван Петров',
+            role: 'Разработчик',
+          },
+        ],
       },
       {
         id: '2',
@@ -30,6 +37,13 @@ export const projects: Project[] = [
         priority: 'medium',
         completed: true,
         projectId: 1,
+        assignees: [
+          {
+            id: 101,
+            name: 'Иван Петров',
+            role: 'Разработчик',
+          },
+        ],
       },
       {
         id: '3',
@@ -41,6 +55,13 @@ export const projects: Project[] = [
         priority: 'low',
         completed: false,
         projectId: 1,
+        assignees: [
+          {
+            id: 101,
+            name: 'Иван Петров',
+            role: 'Разработчик',
+          },
+        ],
       },
       {
         id: '7',
@@ -52,6 +73,13 @@ export const projects: Project[] = [
         priority: 'low',
         completed: false,
         projectId: 1,
+        assignees: [
+          {
+            id: 101,
+            name: 'Иван Петров',
+            role: 'Разработчик',
+          },
+        ],
       },
       {
         id: '8',
@@ -63,6 +91,13 @@ export const projects: Project[] = [
         priority: 'low',
         completed: false,
         projectId: 1,
+        assignees: [
+          {
+            id: 102,
+            name: 'Анастасия Смирнова',
+            role: 'Дизайнер',
+          },
+        ],
       },
       {
         id: '9',
@@ -74,6 +109,13 @@ export const projects: Project[] = [
         priority: 'low',
         completed: false,
         projectId: 1,
+        assignees: [
+          {
+            id: 102,
+            name: 'Анастасия Смирнова',
+            role: 'Дизайнер',
+          },
+        ],
       },
     ],
     assignees: [
@@ -134,6 +176,18 @@ export const projects: Project[] = [
         priority: 'high',
         completed: false,
         projectId: 2,
+        assignees: [
+          {
+            id: 103,
+            name: 'Дмитрий Иванов',
+            role: 'Backend-разработчик',
+          },
+          {
+            id: 104,
+            name: 'Елена Кузнецова',
+            role: 'Frontend-разработчик',
+          },
+        ],
       },
       {
         id: '5',
@@ -145,6 +199,18 @@ export const projects: Project[] = [
         priority: 'high',
         completed: false,
         projectId: 2,
+        assignees: [
+          {
+            id: 103,
+            name: 'Дмитрий Иванов',
+            role: 'Backend-разработчик',
+          },
+          {
+            id: 104,
+            name: 'Елена Кузнецова',
+            role: 'Frontend-разработчик',
+          },
+        ],
       },
       {
         id: '6',
@@ -156,6 +222,18 @@ export const projects: Project[] = [
         priority: 'high',
         completed: true,
         projectId: 2,
+        assignees: [
+          {
+            id: 103,
+            name: 'Дмитрий Иванов',
+            role: 'Backend-разработчик',
+          },
+          {
+            id: 104,
+            name: 'Елена Кузнецова',
+            role: 'Frontend-разработчик',
+          },
+        ],
       },
     ],
     assignees: [

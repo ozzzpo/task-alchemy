@@ -1,6 +1,8 @@
 import { useAppStore } from '@/entities/App/app.store';
 import { useProjectStore } from '@/entities/Project/model/project.store';
 import { ProjectCard } from '@/entities/Project/ui/project-card';
+import { CreateProject } from '@/features/create-project';
+
 import { Input } from '@/shared/ui/input';
 import { useEffect } from 'react';
 
@@ -12,8 +14,9 @@ export function Projects() {
   }, [setTitle]);
   return (
     <div className="flex flex-col gap-4">
-      <div>
-        <Input placeholder="Поиск" />
+      <div className="flex justify-between">
+        <Input className="w-[500px]" placeholder="Поиск" />
+        <CreateProject />
       </div>
       <div className="flex gap-4 flex-wrap">
         {projects.map((project) => (

@@ -1,9 +1,8 @@
-'use client';
-
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 
@@ -15,20 +14,34 @@ import {
   TableHeader,
   TableRow,
 } from '@/shared/ui/table';
+import { Sheet, SheetContent, SheetTrigger } from './sheet';
+import { ReactNode, useState } from 'react';
+import { Button } from './button';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  entitySheet: (data: any) => ReactNode;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  entitySheet,
 }: DataTableProps<TData, TValue>) {
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
+    state: {
+      pagination,
+    },
   });
 
   return (
@@ -58,16 +71,26 @@ export function DataTable<TData, TValue>({
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
+              <Sheet key={row.id}>
+                <SheetTrigger asChild>
+                  <TableRow
+                    className="cursor-pointer"
+                    data-state={row.getIsSelected() && 'selected'}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </SheetTrigger>
+                <SheetContent>
+                  {entitySheet({ data: row.original })}
+                </SheetContent>
+              </Sheet>
             ))
           ) : (
             <TableRow>
@@ -78,6 +101,22 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+      <div className="space-x-3 mt-2">
+        <Button
+          className={`${table.getCanNextPage() ? '' : 'hidden'}`}
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {'<'}
+        </Button>
+        <Button
+          className={`${table.getCanNextPage() ? '' : 'hidden'}`}
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          {'>'}
+        </Button>
+      </div>
     </div>
   );
 }

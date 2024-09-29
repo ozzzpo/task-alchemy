@@ -7,22 +7,20 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/shared/ui/dropdown-menu';
-import { Button } from '@/shared/ui/button';
 import { FilterIcon } from 'lucide-react';
-import { EmployeeCard } from '@/entities/Employee/ui/employee-card';
+import { DataTable } from '@/shared/ui/data-table';
+import { getColumns } from './tableColumns';
+import { useEmployeeStore } from '@/entities/Employee/model/employee.store';
+import { EmployeeSheet } from '@/entities/Employee/ui/employee-sheet';
+import { AddEmployee } from '@/features/add-employee';
 
-
-const employeeDetails = [
-  { id: 1, value: 'Сотрудник' },
-  { id: 2, value: 'Номер телефона' },
-  { id: 3, value: 'Отдел' },
-  { id: 4, value: 'Должность' },
-];
 export function Employees() {
   const { setTitle } = useAppStore();
+  const { employees } = useEmployeeStore();
   useEffect(() => {
     setTitle('Сотрудники');
   }, [setTitle]);
+  const columns = getColumns();
   return (
     <div className="flex flex-col gap-10">
       <div className="flex justify-between ">
@@ -41,22 +39,14 @@ export function Employees() {
           </DropdownMenu>
         </div>
         <div>
-          <Button className="bg-blue-500">Добавить сотрудника</Button>
+          <AddEmployee />
         </div>
       </div>
-      <div className='flex flex-col gap-[15px]'>
-      <div className="w-full bg-neutral-100 py-2 px-5 rounded-[8px]">
-        <div className="flex w-[72%] justify-between">
-          {employeeDetails.map((detail) => (
-            <span key={detail.id}>{detail.value}</span>
-          ))}
-        </div> 
-      </div>
-      <div className='flex flex-col gap-[15px]'>
-        <EmployeeCard/>
-        <EmployeeCard/>
-      </div>
-      </div>
+      <DataTable
+        columns={columns}
+        data={employees}
+        entitySheet={EmployeeSheet}
+      />
     </div>
   );
 }

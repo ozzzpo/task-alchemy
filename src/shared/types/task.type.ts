@@ -1,3 +1,5 @@
+import { Employee } from './employee.type';
+
 export type Task = {
   id: string;
   title: string;
@@ -7,4 +9,5 @@ export type Task = {
   priority: string;
   completed: boolean;
   projectId: number;
+  assignees: Employee[] | null;
 };
