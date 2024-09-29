@@ -8,6 +8,6 @@ export type Task = {
   endDate: string;
   priority: string;
   completed: boolean;
-  projectId: number;
+  projectId: string;
   assignees?: Employee[] | null;
 };

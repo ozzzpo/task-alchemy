@@ -40,7 +40,6 @@ export const useProjectStore = create<ProjectStoreType>()(
 
         // Находим колонку "Очередь задач" (предполагается, что она всегда есть, обычно первая колонка)
         const backlogColumnId = Object.keys(currentProject.columns)[0];
-        console.log(currentProject.columns);
         const backlogColumn = currentProject.columns[backlogColumnId];
 
         if (!backlogColumn) return;
@@ -53,10 +52,23 @@ export const useProjectStore = create<ProjectStoreType>()(
           ...backlogColumn,
           taskIds: updatedTaskIds,
         };
-
+        const newProjects = get().projects.map((project) => {
+          if (project.id === currentProject.id) {
+            return {
+              ...project,
+              tasks: [...(get().currentProject?.tasks ?? []), newTask],
+              columns: {
+                ...project.columns,
+                [updatedColumn.id]: updatedColumn,
+              },
+            };
+          }
+          return project;
+        });
         // Обновляем проект с новой задачей и обновленной колонкой
         set((state) => ({
           ...state,
+          projects: newProjects,
           currentProject: {
             ...state.currentProject!,
             tasks: [...(state.currentProject?.tasks ?? []), newTask], // добавляем новую задачу в проект

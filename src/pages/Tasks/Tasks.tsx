@@ -16,6 +16,7 @@ export function Tasks() {
     setTasks(allTasks);
   }, [projects, setTitle, setTasks]);
   const columns = getColumns(projects);
+  console.log(tasks);
   return (
     <div>
       <DataTable columns={columns} data={tasks} entitySheet={TaskSheet} />

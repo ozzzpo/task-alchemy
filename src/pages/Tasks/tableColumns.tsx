@@ -30,8 +30,8 @@ export const getColumns = (projects: Project[]) => {
         const endDate: string = row.getValue('endDate');
         return (
           <p className="text-neutral-600 min-w-36">
-            {DateTime.fromISO(startDate).toFormat('dd.MM.yy')} -
-            {DateTime.fromISO(endDate).toFormat('dd.MM.yy')}
+            {startDate && DateTime.fromISO(startDate).toFormat('dd.MM.yy')} -
+            {endDate && DateTime.fromISO(endDate).toFormat('dd.MM.yy')}
           </p>
         );
       },
@@ -50,7 +50,7 @@ export const getColumns = (projects: Project[]) => {
       accessorKey: 'projectId',
       header: 'Проект',
       cell: ({ row }) => {
-        const projectId: number = row.getValue('projectId');
+        const projectId: string = row.getValue('projectId');
         const project = projects.find((project) => project.id === projectId);
         return <p className="text-neutral-600 font-medium">{project?.title}</p>;
       },
