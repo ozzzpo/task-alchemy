@@ -1,6 +1,6 @@
 import { SIDEBAR_ITEMS } from '@/shared/constants/SIDEBAR_ITEMS';
 import { SidebarItem } from './sidebar-item';
-import { LogOut, Moon } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { useUserStore } from '@/entities/User/model/user.store';
 import { ToggleTheme } from '@/features/toggle-theme';
 
