@@ -18,6 +18,7 @@ export const projects: Project[] = [
         endDate: '2024-09-30',
         priority: 'high',
         completed: true,
+        projectId: 1,
       },
       {
         id: '2',
@@ -28,6 +29,7 @@ export const projects: Project[] = [
         endDate: '2024-09-15',
         priority: 'medium',
         completed: true,
+        projectId: 1,
       },
       {
         id: '3',
@@ -38,6 +40,7 @@ export const projects: Project[] = [
         endDate: '2024-09-15',
         priority: 'low',
         completed: false,
+        projectId: 1,
       },
       {
         id: '7',
@@ -48,6 +51,7 @@ export const projects: Project[] = [
         endDate: '2024-09-15',
         priority: 'low',
         completed: false,
+        projectId: 1,
       },
       {
         id: '8',
@@ -58,6 +62,7 @@ export const projects: Project[] = [
         endDate: '2024-09-15',
         priority: 'low',
         completed: false,
+        projectId: 1,
       },
       {
         id: '9',
@@ -68,6 +73,7 @@ export const projects: Project[] = [
         endDate: '2024-10-15',
         priority: 'low',
         completed: false,
+        projectId: 1,
       },
     ],
     assignees: [
@@ -126,8 +132,8 @@ export const projects: Project[] = [
         startDate: '2024-09-01',
         endDate: '2024-09-15',
         priority: 'high',
-
         completed: false,
+        projectId: 2,
       },
       {
         id: '5',
@@ -137,8 +143,8 @@ export const projects: Project[] = [
         startDate: '2024-09-01',
         endDate: '2024-09-15',
         priority: 'high',
-
         completed: false,
+        projectId: 2,
       },
       {
         id: '6',
@@ -149,6 +155,7 @@ export const projects: Project[] = [
         endDate: '2024-09-15',
         priority: 'high',
         completed: true,
+        projectId: 2,
       },
     ],
     assignees: [

@@ -4,12 +4,12 @@ import { PRIORITIES } from '../constants/PRIORITIES';
 export function PriorityTag({ priority }: { priority: string }) {
   return (
     <div
-      className={`h-fit w-fit rounded-lg text-xs px-1.5 py-0.5 flex items-center gap-0.5 ${
+      className={`h-fit min-w-20 w-fit rounded-lg text-xs px-2 py-1.5 flex items-center gap-0.5 ${
         priority === 'low'
-          ? 'bg-green-300'
+          ? 'bg-green-200'
           : priority === 'medium'
           ? 'bg-yellow-200'
-          : 'bg-red-300'
+          : 'bg-red-200'
       }`}
     >
       <Flag
@@ -21,7 +21,9 @@ export function PriorityTag({ priority }: { priority: string }) {
             : 'text-red-600'
         }`}
       />
-      {PRIORITIES[priority as keyof typeof PRIORITIES]}
+      <p className="text-neutral-600">
+        {PRIORITIES[priority as keyof typeof PRIORITIES]}
+      </p>
     </div>
   );
 }

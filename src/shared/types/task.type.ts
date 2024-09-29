@@ -6,4 +6,5 @@ export type Task = {
   endDate: string;
   priority: string;
   completed: boolean;
+  projectId: number;
 };

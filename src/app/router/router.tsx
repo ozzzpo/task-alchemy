@@ -4,7 +4,7 @@ import { Sidebar } from '@/widgets/sidebar/sidebar';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { PrivateRoute } from './private-route';
 import { Profile } from '@/pages/Profile';
-import { Tasks } from '@/pages/Tasks';
+import { Tasks } from '@/pages/Tasks/Tasks';
 import { Projects } from '@/pages/Projects';
 import { Portfolio } from '@/pages/Portfolio';
 import { Employees } from '@/pages/Employees';
