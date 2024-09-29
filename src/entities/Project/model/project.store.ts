@@ -1,39 +1,105 @@
+import { OnDragEndResponder } from 'react-beautiful-dnd';
+import { v4 as uuidv4 } from 'uuid';
 import { Nullable } from '@/shared/types/common.type';
 import { Project } from '@/shared/types/project.type';
 import { create } from 'zustand';
-import { projects } from './projects';
 import { persist } from 'zustand/middleware';
-import { getProjectColumns } from '../lib/getProjectColumns';
-import { OnDragEndResponder } from 'react-beautiful-dnd';
+import { Task } from '@/shared/types/task.type';
 
 type ProjectStoreType = {
   projects: Project[];
   currentProject: Nullable<Project>;
-  boardColumns: Record<
-    string,
-    { id: string; title: string; taskIds: string[] }
-  >;
-  setCurrentProject: (projectId: number) => void;
-  setColumns: (project: Project) => void;
+  setCurrentProject: (projectId: string) => void;
+  addProject: (project: Omit<Project, 'id' | 'columns'>) => void;
+  addTask: (task: Omit<Task, 'id'>) => void;
   handleDragEnd: OnDragEndResponder;
 };
 
 export const useProjectStore = create<ProjectStoreType>()(
   persist(
     (set, get) => ({
-      projects,
+      projects: [],
       currentProject: null,
       boardColumns: {},
-      setCurrentProject: (projectId: number) =>
+      setCurrentProject: (projectId) =>
         set({
           currentProject: get().projects.find(
             (project) => project.id === projectId
           ),
         }),
-      setColumns: () => {
-        if (!get().currentProject) return {};
-        const columns = getProjectColumns(get().currentProject);
-        set({ boardColumns: columns });
+
+      addTask: (task) => {
+        const { currentProject } = get();
+        if (!currentProject) return;
+
+        // Создаем новую задачу с уникальным id
+        const newTask = {
+          ...task,
+          id: uuidv4(),
+        };
+
+        // Находим колонку "Очередь задач" (предполагается, что она всегда есть, обычно первая колонка)
+        const backlogColumnId = Object.keys(currentProject.columns)[0];
+        console.log(currentProject.columns);
+        const backlogColumn = currentProject.columns[backlogColumnId];
+
+        if (!backlogColumn) return;
+
+        // Добавляем id новой задачи в колонку "Очередь задач"
+        const updatedTaskIds = [...backlogColumn.taskIds, newTask.id];
+
+        // Обновляем колонку с новыми задачами
+        const updatedColumn = {
+          ...backlogColumn,
+          taskIds: updatedTaskIds,
+        };
+
+        // Обновляем проект с новой задачей и обновленной колонкой
+        set((state) => ({
+          ...state,
+          currentProject: {
+            ...state.currentProject!,
+            tasks: [...(state.currentProject?.tasks ?? []), newTask], // добавляем новую задачу в проект
+            columns: {
+              ...state.currentProject?.columns,
+              [updatedColumn.id]: updatedColumn, // обновляем существующую колонку без её дублирования
+            },
+          },
+        }));
+      },
+
+      addProject: (project) => {
+        set((state) => ({
+          projects: [
+            ...state.projects,
+            {
+              ...project,
+              id: uuidv4(),
+              columns: {
+                '1': {
+                  id: '1',
+                  title: 'Очередь задач',
+                  taskIds: [],
+                },
+                '2': {
+                  id: '2',
+                  title: 'В работе',
+                  taskIds: [],
+                },
+                '3': {
+                  id: '3',
+                  title: 'Тестируется',
+                  taskIds: [],
+                },
+                '4': {
+                  id: '4',
+                  title: 'Готово',
+                  taskIds: [],
+                },
+              },
+            },
+          ],
+        }));
       },
       // Drag and Drop Handler
       handleDragEnd: (result) =>
@@ -51,9 +117,14 @@ export const useProjectStore = create<ProjectStoreType>()(
             return state;
           }
 
+          const { currentProject } = state;
+          if (!currentProject) return state;
+
           // Получаем колонку источника и колонку назначения
-          const startColumn = state.boardColumns[source.droppableId];
-          const finishColumn = state.boardColumns[destination.droppableId];
+          const startColumn = currentProject.columns[source.droppableId];
+          const finishColumn = currentProject.columns[destination.droppableId];
+
+          if (!startColumn || !finishColumn) return state;
 
           // Перемещение внутри одной и той же колонки
           if (startColumn === finishColumn) {
@@ -61,16 +132,19 @@ export const useProjectStore = create<ProjectStoreType>()(
             newTaskIds.splice(source.index, 1); // Удаляем из старого места
             newTaskIds.splice(destination.index, 0, draggableId); // Вставляем на новое
 
-            const newColumn = {
+            const updatedColumn = {
               ...startColumn,
               taskIds: newTaskIds,
             };
 
             return {
               ...state,
-              boardColumns: {
-                ...state.boardColumns,
-                [newColumn.id]: newColumn,
+              currentProject: {
+                ...currentProject,
+                columns: {
+                  ...currentProject.columns,
+                  [updatedColumn.id]: updatedColumn,
+                },
               },
             };
           }
@@ -90,12 +164,16 @@ export const useProjectStore = create<ProjectStoreType>()(
             taskIds: finishTaskIds,
           };
 
+          // Обновляем колонки
           return {
             ...state,
-            boardColumns: {
-              ...state.boardColumns,
-              [newStartColumn.id]: newStartColumn,
-              [newFinishColumn.id]: newFinishColumn,
+            currentProject: {
+              ...currentProject,
+              columns: {
+                ...currentProject.columns,
+                [newStartColumn.id]: newStartColumn,
+                [newFinishColumn.id]: newFinishColumn,
+              },
             },
           };
         }),
@@ -103,8 +181,8 @@ export const useProjectStore = create<ProjectStoreType>()(
     {
       name: 'project-store',
       partialize: (state) => ({
+        projects: state.projects,
         currentProject: state.currentProject,
-        boardColumns: state.boardColumns,
       }),
     }
   )

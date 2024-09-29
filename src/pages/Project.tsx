@@ -7,13 +7,12 @@ import { useEffect } from 'react';
 
 export function Project() {
   const { setTitle } = useAppStore();
-  const { currentProject, setColumns } = useProjectStore();
+  const { currentProject } = useProjectStore();
   useEffect(() => {
     if (currentProject) {
       setTitle(currentProject?.title);
-      setColumns(currentProject);
     }
-  }, [currentProject, setTitle, setColumns]);
+  }, [currentProject, setTitle]);
   return (
     <Tabs defaultValue="kanban" className="h-full">
       <TabsList>

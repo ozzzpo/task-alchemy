@@ -6,6 +6,7 @@ import { Button } from '@/shared/ui/button';
 import { Calendar } from '@/shared/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
 import { UseFormSetValue } from 'react-hook-form';
+import { ru } from 'date-fns/locale';
 
 export function DatePicker({
   inputName,
@@ -30,7 +31,7 @@ export function DatePicker({
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, 'PPP') : <span>__.__.____</span>}
+          {date ? format(date, 'PPP', { locale: ru }) : <span>__.__.____</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">

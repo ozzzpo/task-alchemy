@@ -24,6 +24,7 @@ export function AddEmployee() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>();
   const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +35,7 @@ export function AddEmployee() {
     const projectIds = employeeProjects.map((project) => project.id);
     addEmployee({ ...data, projectIds });
     setIsOpen(false);
+    reset();
   };
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

@@ -9,5 +9,5 @@ export type Task = {
   priority: string;
   completed: boolean;
   projectId: number;
-  assignees: Employee[] | null;
+  assignees?: Employee[] | null;
 };

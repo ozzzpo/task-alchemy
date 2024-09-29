@@ -5,7 +5,7 @@ import { getBoardTasks } from './lib/getBoardTasks';
 import { DraggableTaskCard } from '@/entities/Task/ui/draggable-task-card';
 
 export function KanbanBoard() {
-  const { boardColumns, currentProject, handleDragEnd } = useProjectStore();
+  const { currentProject, handleDragEnd } = useProjectStore();
   const tasks = getBoardTasks(currentProject?.tasks);
   return (
     <div className="min-h-[600px] min-w-full overflow-hidden bg-black rounded-md p-5">
@@ -14,7 +14,7 @@ export function KanbanBoard() {
       <AddTask />
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="flex gap-6 py-4 min-h-[600px] overflow-x-scroll">
-          {Object.entries(boardColumns).map(([columnId, column]) => (
+          {Object.entries(currentProject!.columns).map(([columnId, column]) => (
             <div
               className=" flex flex-col min-w-64 max-w-64  bg-gray-200 p-4 rounded-md"
               key={columnId}

@@ -22,19 +22,23 @@ export function ProjectCard({ project }: { project: Project }) {
       <p className="text-lg  flex-1">{project.description}</p>
       <div className="flex items-center gap-1.5">
         <Calendar className="min-w-4 min-h-4" />
-        {DateTime.fromISO(project.start_date)
-          .setLocale('ru')
-          .toFormat('dd MMMM')}
+        {project.startDate
+          ? DateTime.fromISO(project.startDate)
+              .setLocale('ru')
+              .toFormat('dd MMMM')
+          : 'Не ограничено'}
       </div>
       <div className="flex items-center gap-1.5">
         <Target className="min-w-4 min-h-4" />
-        {DateTime.fromISO(project.end_date)
-          .setLocale('ru')
-          .toFormat('dd MMMM yyyy')}
+        {project.endDate
+          ? DateTime.fromISO(project.endDate)
+              .setLocale('ru')
+              .toFormat('dd MMMM yyyy')
+          : 'Не ограничено'}
       </div>
       <div className="flex items-center gap-2">
         <Progress value={progress} />
-        <span>{progress}%</span>
+        <span>{Number.isNaN(progress) ? 0 : progress}%</span>
       </div>
     </div>
   );

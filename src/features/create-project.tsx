@@ -11,19 +11,46 @@ import { Input } from '@/shared/ui/input';
 import { Textarea } from '@/shared/ui/textarea';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { SearchEmployees } from './search-employees';
+import { Employee } from '@/shared/types/employee.type';
+import { DateTime } from 'luxon';
+import { useProjectStore } from '@/entities/Project/model/project.store';
 type FormData = {
   title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
+  description?: string;
+  startDate?: Date;
+  endDate?: Date;
 };
 
-const onSubmit: SubmitHandler<FormData> = (data) => {
-  console.log(data);
-};
 export function CreateProject() {
-  const { register, handleSubmit, setValue } = useForm<FormData>();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>();
   const [isOpen, setIsOpen] = useState(false);
+  const { addProject } = useProjectStore();
+  const [projectEmployees, setProjectEmployees] = useState<Employee[]>([]);
+
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    const startDate =
+      data.startDate &&
+      DateTime.fromJSDate(data.startDate).toFormat('yyyy-MM-dd');
+    const endDate =
+      data.endDate && DateTime.fromJSDate(data.endDate).toFormat('yyyy-MM-dd');
+    console.log({ ...data, startDate, endDate, assignees: projectEmployees });
+    addProject({
+      ...data,
+      startDate,
+      endDate,
+      assignees: projectEmployees,
+      tasks: [],
+    });
+    setIsOpen(false);
+    reset();
+  };
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -35,10 +62,10 @@ export function CreateProject() {
         </DialogHeader>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="text-lg flex"
+          className="text-lg flex gap-5"
           id="create-project"
         >
-          <div className="space-y-5">
+          <div className="min-w-[47%] space-y-5">
             <div>
               <label htmlFor="title" className="pb-2">
                 Имя проекта
@@ -46,17 +73,18 @@ export function CreateProject() {
               <Input
                 id="title"
                 placeholder="Введите имя проекта..."
-                {...register('title')}
+                {...register('title', { required: 'Это поле обязательно' })}
               />
+              <p className="text-xs text-red-500">{errors.title?.message}</p>
             </div>
             <div>
               <label htmlFor="title" className="text-lg pb-2">
                 Описание проекта
               </label>
               <Textarea
-                id="title"
+                id="description"
                 placeholder="Введите описание проекта..."
-                {...register('title')}
+                {...register('description')}
               />
             </div>
             <div className="flex gap-5">
@@ -73,8 +101,23 @@ export function CreateProject() {
                 <DatePicker inputName="endDate" setValue={setValue} />
               </div>
             </div>
+            <div className="flex flex-col">
+              <label htmlFor="role" className="text-lg pb-2">
+                Сотрудники
+              </label>
+              {projectEmployees.map((employee, index) => (
+                <p className="pb-2 font-medium" key={employee.id}>
+                  {index + 1}. {employee.name}
+                </p>
+              ))}
+            </div>
           </div>
-          <div>Employyes</div>
+          <div>
+            <SearchEmployees
+              projectEmployees={projectEmployees}
+              setProjectEmployees={setProjectEmployees}
+            />
+          </div>
         </form>
         <Button type="submit" form="create-project">
           Создать

@@ -1,5 +1,5 @@
 import { useAppStore } from '@/entities/App/app.store';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '@/shared/ui/input';
 import {
   DropdownMenu,
@@ -20,12 +20,20 @@ export function Employees() {
   useEffect(() => {
     setTitle('Сотрудники');
   }, [setTitle]);
+  const [query, setQuery] = useState<string>('');
+  const filteredEmployees = employees.filter((employee) => {
+    return employee.name.toLowerCase().includes(query.toLowerCase());
+  });
   const columns = getColumns();
   return (
     <div className="flex flex-col gap-10">
       <div className="flex justify-between ">
         <div className="flex gap-5">
-          <Input placeholder="Поиск" />
+          <Input
+            placeholder="Поиск"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
           <DropdownMenu>
             <DropdownMenuTrigger>
               <div className="flex align-middle gap-2 border border-slate-300 rounded-sm py-1.5 px-6">
@@ -44,7 +52,7 @@ export function Employees() {
       </div>
       <DataTable
         columns={columns}
-        data={employees}
+        data={filteredEmployees}
         entitySheet={EmployeeSheet}
       />
     </div>

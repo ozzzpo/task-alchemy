@@ -4,7 +4,7 @@ import { ProjectCard } from '@/entities/Project/ui/project-card';
 import { CreateProject } from '@/features/create-project';
 
 import { Input } from '@/shared/ui/input';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export function Projects() {
   const { projects } = useProjectStore();
@@ -12,14 +12,23 @@ export function Projects() {
   useEffect(() => {
     setTitle('Проекты');
   }, [setTitle]);
+  const [query, setQuery] = useState<string>('');
+  const filteredProjects = projects.filter((project) => {
+    return project.title.toLowerCase().includes(query.toLowerCase());
+  });
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between">
-        <Input className="w-[500px]" placeholder="Поиск" />
+        <Input
+          className="w-[500px]"
+          placeholder="Поиск"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
         <CreateProject />
       </div>
       <div className="flex gap-4 flex-wrap">
-        {projects.map((project) => (
+        {filteredProjects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
       </div>

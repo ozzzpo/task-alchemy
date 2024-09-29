@@ -1,3 +1,4 @@
+import { useProjectStore } from '@/entities/Project/model/project.store';
 import { Button } from '@/shared/ui/button';
 import {
   Dialog,
@@ -10,27 +11,22 @@ import { Input } from '@/shared/ui/input';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 type FormData = {
-  content: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  priority: string;
+  completed: boolean;
+  projectId: number;
 };
 export function AddTask() {
-  const { register, handleSubmit } = useForm<FormData>();
+  const { register, handleSubmit, reset } = useForm<FormData>();
+  const { addTask } = useProjectStore();
   const [isOpen, setIsOpen] = useState(false);
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    // addTask(
-    //   {
-    //     ...data,
-    //     title: data.content,
-    //     description: '',
-    //     startDate: '',
-    //     endDate: '',
-    //     priority: 'low',
-    //     id: String(Math.random()),
-    //     completed: false,
-    //     project: null,
-    //   },
-    //   'column-1'
-    // );
+    addTask(data);
     setIsOpen(false);
+    reset();
   };
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -46,7 +42,7 @@ export function AddTask() {
             <label htmlFor="content" className="pb-2">
               Заголовок задачи
             </label>
-            <Input placeholder="Заголовок" {...register('content')} />
+            <Input placeholder="Заголовок" {...register('title')} />
           </div>
           <Button>Добавить</Button>
         </form>
