@@ -4,5 +4,5 @@ export type Employee = {
   role: string;
   phone: string;
   department?: string;
-  projectIds?: number[];
+  projectIds?: string[];
 };

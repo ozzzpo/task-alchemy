@@ -8,7 +8,7 @@ export function RegisterForm({
   setAuthType: React.Dispatch<React.SetStateAction<'login' | 'register'>>;
 }) {
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     console.log(data);
   };
   return (
