@@ -4,6 +4,7 @@ import { Checkbox } from '@/shared/ui/checkbox';
 import { PriorityTag } from '@/shared/ui/priority-tag';
 import { Sheet, SheetContent, SheetTrigger } from '@/shared/ui/sheet';
 import { TaskSheet } from './task-sheet';
+import { useProjectStore } from '@/entities/Project/model/project.store';
 
 export function DraggableTaskCard({
   task,
@@ -12,6 +13,7 @@ export function DraggableTaskCard({
   task: Task;
   index: number;
 }) {
+  const { updateTask } = useProjectStore();
   return (
     <Sheet>
       <Draggable draggableId={task?.id} index={index}>
@@ -28,7 +30,10 @@ export function DraggableTaskCard({
               <Checkbox
                 className="mt-1"
                 checked={task.completed}
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  updateTask({ ...task, completed: !task.completed });
+                }}
               />
               <div>
                 <p>{task.title}</p>

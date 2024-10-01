@@ -30,8 +30,13 @@ export const getColumns = (projects: Project[]) => {
         const endDate: string = row.getValue('endDate');
         return (
           <p className="text-neutral-600 min-w-36">
-            {startDate && DateTime.fromISO(startDate).toFormat('dd.MM.yy')} -
-            {endDate && DateTime.fromISO(endDate).toFormat('dd.MM.yy')}
+            {startDate
+              ? DateTime.fromISO(startDate).toFormat('dd.MM.yy')
+              : 'Не указано'}{' '}
+            -{' '}
+            {endDate
+              ? DateTime.fromISO(endDate).toFormat('dd.MM.yy')
+              : 'не указано'}
           </p>
         );
       },

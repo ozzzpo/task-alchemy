@@ -8,6 +8,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/shared/ui/select';
 import { Input } from '@/shared/ui/input';
 import { Textarea } from '@/shared/ui/textarea';
 import { DateTime } from 'luxon';
@@ -28,20 +35,35 @@ export function AddTask() {
     handleSubmit,
     reset,
     setValue,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<FormData>();
   const { addTask } = useProjectStore();
   const [isOpen, setIsOpen] = useState(false);
+  const [taskPriority, setTaskPriority] = useState<string>();
   const { currentProject } = useProjectStore();
   const onSubmit: SubmitHandler<FormData> = (data) => {
+    console.log(taskPriority);
+    if (!taskPriority) {
+      setError('priority', { message: 'Это поле обязательно' });
+      return;
+    }
     const startDate =
       data.startDate &&
       DateTime.fromJSDate(data.startDate).toFormat('yyyy-MM-dd');
     const endDate =
       data.endDate && DateTime.fromJSDate(data.endDate).toFormat('yyyy-MM-dd');
-    addTask({ ...data, startDate, endDate, projectId: currentProject!.id });
+    addTask({
+      ...data,
+      startDate,
+      endDate,
+      projectId: currentProject!.id,
+      priority: taskPriority,
+    });
     setIsOpen(false);
     reset();
+    setTaskPriority(undefined);
   };
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -92,6 +114,28 @@ export function AddTask() {
                 </label>
                 <DatePicker inputName="endDate" setValue={setValue} />
               </div>
+            </div>
+            <div>
+              <label htmlFor="priority" className="pb-2">
+                Приоритет
+              </label>
+              <Select
+                value={taskPriority}
+                onValueChange={(value) => {
+                  setTaskPriority(value);
+                  clearErrors('priority');
+                }}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Выберите приоритет..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="high">Высокий</SelectItem>
+                  <SelectItem value="medium">Средний</SelectItem>
+                  <SelectItem value="low">Низкий</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-red-500">{errors.priority?.message}</p>
             </div>
           </div>
         </form>

@@ -7,14 +7,12 @@ const GanttChart = ({ tasks }: { tasks: Task[] }) => {
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
-    svg.selectAll('*').remove(); // очищаем svg перед каждым рендером
+    svg.selectAll('*').remove();
 
-    // Определение размеров
     const width = 1100;
     const height = 250;
     const margin = { top: 20, right: 20, bottom: 20, left: 200 };
 
-    // Настройка локализации для русского языка
     const russianLocale = d3.timeFormatLocale({
       dateTime: '%A, %e %B %Y г. %X',
       date: '%d.%m.%Y',
@@ -62,7 +60,6 @@ const GanttChart = ({ tasks }: { tasks: Task[] }) => {
 
     const russianDateFormat = russianLocale.format('%d %b %Y');
 
-    // Настройки временной шкалы
     const xScale = d3
       .scaleTime()
       .domain([
@@ -77,7 +74,6 @@ const GanttChart = ({ tasks }: { tasks: Task[] }) => {
       .range([margin.top, height - margin.bottom])
       .padding(0.2);
 
-    // Создаем оси
     const xAxis = d3
       .axisBottom(xScale)
       .ticks(d3.timeDay.every(5))
@@ -86,7 +82,6 @@ const GanttChart = ({ tasks }: { tasks: Task[] }) => {
 
     const yAxis = d3.axisLeft(yScale);
 
-    // Добавляем ось X
     svg
       .append('g')
       .attr('transform', `translate(0,${height - margin.bottom})`)
@@ -94,19 +89,17 @@ const GanttChart = ({ tasks }: { tasks: Task[] }) => {
       .call(xAxis)
       .selectAll('text')
       .attr('transform', 'rotate(-45)')
-      .style('font-size', '12px') // Изменение размера текста
+      .style('font-size', '12px')
       .style('font-family', 'TTTravels')
       .style('text-anchor', 'end');
 
-    // Добавляем ось Y
     svg
       .append('g')
       .attr('transform', `translate(${margin.left},0)`)
-      .style('font-size', '12px') // Изменение размера текста
+      .style('font-size', '12px')
       .style('font-family', 'TTTravels')
       .call(yAxis);
 
-    // Отрисовка задач в виде прямоугольников
     svg
       .selectAll('rect')
       .data(tasks)
@@ -121,7 +114,6 @@ const GanttChart = ({ tasks }: { tasks: Task[] }) => {
       .attr('height', yScale.bandwidth())
       .attr('fill', (d) => (d.completed ? 'lightgray' : 'steelblue'));
 
-    // Добавляем текст внутри задач
     svg
       .selectAll('text.task-title')
       .data(tasks)

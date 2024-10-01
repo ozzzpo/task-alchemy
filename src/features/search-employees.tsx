@@ -70,7 +70,7 @@ export const SearchEmployees = ({
             </div>
           ))
         ) : (
-          <p>Проектов не найдено</p>
+          <p>Сотрудников не найдено</p>
         )}
       </div>
     </div>

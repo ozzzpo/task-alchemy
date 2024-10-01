@@ -28,9 +28,15 @@ export function Projects() {
         <CreateProject />
       </div>
       <div className="flex gap-4 flex-wrap">
-        {filteredProjects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
+        {filteredProjects.length ? (
+          filteredProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))
+        ) : (
+          <div className="text-xl font-medium w-full text-center mt-3">
+            Начните добавлять проекты!
+          </div>
+        )}
       </div>
     </div>
   );

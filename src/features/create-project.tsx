@@ -40,7 +40,6 @@ export function CreateProject() {
       DateTime.fromJSDate(data.startDate).toFormat('yyyy-MM-dd');
     const endDate =
       data.endDate && DateTime.fromJSDate(data.endDate).toFormat('yyyy-MM-dd');
-    console.log({ ...data, startDate, endDate, assignees: projectEmployees });
     addProject({
       ...data,
       startDate,

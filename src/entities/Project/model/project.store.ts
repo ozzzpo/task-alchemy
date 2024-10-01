@@ -12,6 +12,7 @@ type ProjectStoreType = {
   setCurrentProject: (projectId: string) => void;
   addProject: (project: Omit<Project, 'id' | 'columns'>) => void;
   addTask: (task: Omit<Task, 'id'>) => void;
+  updateTask: (task: Task) => void;
   handleDragEnd: OnDragEndResponder;
 };
 
@@ -32,22 +33,18 @@ export const useProjectStore = create<ProjectStoreType>()(
         const { currentProject } = get();
         if (!currentProject) return;
 
-        // Создаем новую задачу с уникальным id
         const newTask = {
           ...task,
           id: uuidv4(),
         };
 
-        // Находим колонку "Очередь задач" (предполагается, что она всегда есть, обычно первая колонка)
         const backlogColumnId = Object.keys(currentProject.columns)[0];
         const backlogColumn = currentProject.columns[backlogColumnId];
 
         if (!backlogColumn) return;
 
-        // Добавляем id новой задачи в колонку "Очередь задач"
         const updatedTaskIds = [...backlogColumn.taskIds, newTask.id];
 
-        // Обновляем колонку с новыми задачами
         const updatedColumn = {
           ...backlogColumn,
           taskIds: updatedTaskIds,
@@ -65,17 +62,48 @@ export const useProjectStore = create<ProjectStoreType>()(
           }
           return project;
         });
-        // Обновляем проект с новой задачей и обновленной колонкой
+
         set((state) => ({
           ...state,
           projects: newProjects,
           currentProject: {
             ...state.currentProject!,
-            tasks: [...(state.currentProject?.tasks ?? []), newTask], // добавляем новую задачу в проект
+            tasks: [...(state.currentProject?.tasks ?? []), newTask],
             columns: {
               ...state.currentProject?.columns,
-              [updatedColumn.id]: updatedColumn, // обновляем существующую колонку без её дублирования
+              [updatedColumn.id]: updatedColumn,
             },
+          },
+        }));
+      },
+
+      updateTask: (task) => {
+        const { currentProject } = get();
+        if (!currentProject) return;
+
+        const newTasks = currentProject.tasks.map((t) => {
+          if (t.id === task.id) {
+            return task;
+          }
+          return t;
+        });
+
+        const newProjects = get().projects.map((project) => {
+          if (project.id === currentProject.id) {
+            return {
+              ...project,
+              tasks: newTasks,
+            };
+          }
+          return project;
+        });
+
+        set((state) => ({
+          ...state,
+          projects: newProjects,
+          currentProject: {
+            ...state.currentProject!,
+            tasks: newTasks,
           },
         }));
       },
